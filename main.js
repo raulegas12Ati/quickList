@@ -1,10 +1,10 @@
 //array
 const items = []
 
-function addItem(){
+function addItem() {
     const itemName = document.querySelector("#item").value
 
-//objeto
+    //objeto
     const item = {
         name: itemName,
         checked: false
@@ -14,5 +14,30 @@ function addItem(){
 
     document.querySelector("#item").value = ""
 
-    console.log(items)
+    showItemsList()
+}
+
+function showItemsList() {
+    const sectionList = document.querySelector(".list")
+
+    sectionList.innerHTML = ""
+
+    items.sort(() => {})
+
+    items.map((item, index) => {
+        sectionList.innerHTML += `
+        <div class="item">
+                <div>
+                    <input type="checkbox" name="list" id="item-${index}">
+                    <div class="custom-checkbox">
+                        <img src="./assets/checked.svg" alt="checked">
+                    </div>
+                    <label for="item-${index}">${item.name}</label>
+                </div>
+                <button>
+                    <img src="./assets/trash-icon.svg" alt="trash icon">
+                </button>
+            </div>
+        `
+    })
 }
