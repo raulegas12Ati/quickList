@@ -4,6 +4,11 @@ const items = []
 function addItem() {
     const itemName = document.querySelector("#item").value
 
+    if(itemName===""){
+        alert("Digite um item valido")
+        return
+    }
+
     //objeto
     const item = {
         name: itemName,
@@ -57,6 +62,7 @@ function removeItem(itemName){
     setTimeout(() => {
         divWarning.classList.add("hide-warning")
     }, 4000)
+
     if(itemIndex !== -1){
         items.splice(itemIndex, 1)
     }
