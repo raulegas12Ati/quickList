@@ -22,7 +22,7 @@ function showItemsList() {
 
     sectionList.innerHTML = ""
 
-    items.sort(() => {})
+    items.sort((itemA, itemB) => Number(itemA.checked - Number(itemB.checked)))
 
     items.map((item, index) => {
         sectionList.innerHTML += `
@@ -40,4 +40,9 @@ function showItemsList() {
             </div>
         `
     })
+}
+
+function checkItem(itemName){
+    const item = items.find((item) => item.name === itemName)
+    item.checked = !item.checked
 }
