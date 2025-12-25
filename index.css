@@ -1,10 +1,10 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-:root{
+:root {
     font-family: "Inter", sans-serif;
     font-size: 62.5%;
 
@@ -21,16 +21,18 @@
     --border-hover: #B9C2D0;
 }
 
-body{
+body {
     font-size: 1.6rem;
     padding: 3.2rem;
     background: var(--background-primary);
 }
 
-header{
+header {
     margin-bottom: 4.4rem;
-    max-width: 62.7rem;/*largura máxima*/
-    margin-inline: auto;/*ficar sempre no centro da horizontal*/
+    max-width: 62.7rem;
+    /*largura máxima*/
+    margin-inline: auto;
+    /*ficar sempre no centro da horizontal*/
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -52,27 +54,22 @@ header{
         cursor: pointer;
     }
 
-    h1{
+    h1 {
         font-size: 2.4rem;
         color: var(--content-primary);
         line-height: 3.2rem;
     }
 }
 
-a{
-    color: var(--color-brand);
-    text-decoration: none;
-}
-
-main{
+main {
     max-width: 62.7rem;
     margin-inline: auto;
 }
 
-.add-item{
+.bancoDados {
     margin-bottom: 4rem;
 
-    input{
+    input {
         width: 100%;
         padding: 1.2rem;
         border: 2px solid var(--border-primary);
@@ -85,7 +82,7 @@ main{
             color: var(--content-tertiary);
         }
 
-        &:hover{
+        &:hover {
             border: 2px solid var(--border-hover);
             cursor: pointer;
         }
@@ -95,7 +92,7 @@ main{
         }
     }
 
-    button{
+    button {
         background: var(--color-brand);
         border: none;
         color: var(--always-white);
@@ -107,122 +104,47 @@ main{
         font-weight: 600;
         cursor: pointer;
 
-        &:hover{
+        &:hover {
             background: var(--color-brand-hover);
         }
     }
 }
 
-.list{
-    .item{
-        background: var(--background-secondary);
-        padding: 1.2rem;
-        margin-bottom: 1.2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 1.6rem;
-        line-height: 2.4rem;
-        font-weight: 500;
-        border-radius: 12px;
-        box-shadow: 0 2px 6px rgba(8, 11, 18, 0.2);
-
-        div{
-            display: flex;
-            gap: 1.2rem;
-            align-items: center;
-        }
-
-        .custom-checkbox{
-            width: 1.6rem;
-            height: 1.6rem;
-            border: 1px solid var(--border-primary);
-            border-radius: 6px;
-        }
-
-        input{
-            display: none;
-        }
-
-        label{
-            cursor: pointer;
-        }
-
-        div:has(input:checked) {
-            .custom-checkbox{
-                background: var(--color-brand);
-                border: 1px solid var(--color-brand);
-                transition: .2s;
-            }
-
-            label{
-                text-decoration: line-through;
-            }
-        }
-
-        button{
-            background: none;
-            border: none;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-
-            img{
-                width: 1.6rem;
-                opacity: .7;
-            }
-        }
-    }
-}
-
-.warning {
-    background: var(--color-danger);
+button {
+    background: var(--color-brand);
+    border: none;
     color: var(--always-white);
-    padding: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    width: 100%;
+    padding: 1rem 2.4rem;
+    font-size: 1.6rem;
+    line-height: 2rem;
     border-radius: 1.2rem;
-    margin-top: 2.4rem;
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    font-weight: 600;
+    cursor: pointer;
 
-    div{
-        display: flex;
-        align-items: center;
-        gap: .8rem;
-    }
-
-    i{
-        font-size: 2rem;
-    }
-
-    button {
-        border: none;
-        background: none;
+    a{
         color: var(--always-white);
+        text-decoration: none;
     }
-}
 
-.hide-warning {
-    opacity: 0;
-    transform: translateY(-10px);
+    &:hover {
+        background: var(--color-brand-hover);
+    }
 }
 
 @media(min-width: 627px) {
     header {
-        img{
+        img {
             margin-bottom: 6.4rem;
         }
     }
 
-    .add-item{
+    .bancoDados {
         display: grid;
         grid-template-columns: repeat(10, 1fr);
         gap: 1.6rem;
-        
-        input{
+
+        input {
             margin-bottom: 0;
             grid-column: 1/8;
         }
