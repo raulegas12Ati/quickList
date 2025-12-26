@@ -86,4 +86,21 @@ function verifyLocalStorageItems(){
     }
 }
 
+function CriaSpan(){
+    const localStorageFiltro = localStorage.getItem("filtro")
+    const header = document.querySelector("header")
+
+    if(localStorageFiltro){
+        header.innerHTML += `
+            <div class="titulos">
+                <h1>Compras da semana</h1>
+                <h2>Banco de dados: <span>${localStorageFiltro}</span></h2>
+            </div>
+        `
+
+        return
+    }
+}
+
+CriaSpan()
 verifyLocalStorageItems()

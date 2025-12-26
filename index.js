@@ -26,9 +26,9 @@ async function createFilter() {
         body: JSON.stringify({ filtro })
     }).then(response => response.json())
 
-    const {message, error} = response
+    const { message, error } = response
 
-    if(error){
+    if (error) {
         alert(error)
         return
     }
@@ -36,6 +36,7 @@ async function createFilter() {
     localStorage.setItem("filtro", JSON.stringify(filtro))
     const localStorageFiltro = localStorage.getItem("filtro")
     alert(message)
+    window.location.href = "./listaCompras.html"
 }
 
 async function filterSearch() {
