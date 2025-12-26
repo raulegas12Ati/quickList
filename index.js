@@ -33,6 +33,8 @@ async function createFilter() {
         return
     }
 
+    localStorage.setItem("filtro", JSON.stringify(filtro))
+    const localStorageFiltro = localStorage.getItem("filtro")
     alert(message)
 }
 
