@@ -3,7 +3,6 @@ const linkAPI = "http://localhost:3333"
 let items = []
 
 async function addItem() {
-
     const itemName = document.querySelector("#item").value
 
     if (itemName === "") {
@@ -19,7 +18,7 @@ async function addItem() {
         filtro: localStorageFiltro
     }
 
-    const response = await fetch(`${linkAPI}/adcionaFIltroNoBanco`, {
+    const response = await fetch(`${linkAPI}/adcionaItemNoBanco`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -27,19 +26,38 @@ async function addItem() {
         body: JSON.stringify({ item })
     }).then(response => response.json())
 
+    const { error, message } = response
 
+    if(error){
+        alert(error)
+        return
+    }
 
-    items.push(item)
+    console.log(message)
 
     document.querySelector("#item").value = ""
 
     showItemsList()
 }
 
-function showItemsList() {
+async function showItemsList() {
+    const localStorageFiltro = localStorage.getItem("filtro")
     const sectionList = document.querySelector(".list")
 
     sectionList.innerHTML = ""
+
+    const response =  await fetch(`${linkAPI}/mostrarLista`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ localStorageFiltro })
+    }).then(response => response.json())
+
+    const {error, item} = response
+
+    // items.push(item)
+    console.log(items)
 
     items.sort((itemA, itemB) => Number(itemA.checked - Number(itemB.checked)))
 
