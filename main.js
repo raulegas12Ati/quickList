@@ -1,20 +1,33 @@
+const linkAPI = "http://localhost:3333"
 //array
 let items = []
 
-function addItem() {
+async function addItem() {
 
     const itemName = document.querySelector("#item").value
 
-    if(itemName===""){
+    if (itemName === "") {
         alert("Digite um item valido")
         return
     }
 
+    const localStorageFiltro = localStorage.getItem("filtro")
     //objeto
     const item = {
         name: itemName,
-        checked: false
+        checked: false,
+        filtro: localStorageFiltro
     }
+
+    const response = await fetch(`${linkAPI}/adcionaFIltroNoBanco`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ item })
+    }).then(response => response.json())
+
+
 
     items.push(item)
 
@@ -50,13 +63,13 @@ function showItemsList() {
     localStorage.setItem("items", JSON.stringify(items))
 }
 
-function checkItem(itemName){
+function checkItem(itemName) {
     const item = items.find((item) => item.name === itemName)
     item.checked = !item.checked
     showItemsList()
 }
 
-function removeItem(itemName){
+function removeItem(itemName) {
     const itemIndex = items.findIndex((item) => item.name === itemName)
     const divWarning = document.querySelector(".warning")
 
@@ -66,36 +79,42 @@ function removeItem(itemName){
         divWarning.classList.add("hide-warning")
     }, 4000)
 
-    if(itemIndex !== -1){
+    if (itemIndex !== -1) {
         items.splice(itemIndex, 1)
     }
 
     showItemsList()
 }
 
-function addHideWarningClass(){
+function addHideWarningClass() {
     document.querySelector(".warning").classList.add("hide-warning")
 }
 
-function verifyLocalStorageItems(){
+function verifyLocalStorageItems() {
     const localStorageItems = localStorage.getItem("items")
 
-    if(localStorageItems){
+    if (localStorageItems) {
         items = JSON.parse(localStorageItems)
         showItemsList()
     }
 }
 
-function CriaSpan(){
-    const localStorageFiltro = localStorage.getItem("filtro")
+function CriaSpan() {
+    const localStorageFiltro = JSON.parse(localStorage.getItem("filtro"))
     const header = document.querySelector("header")
 
-    if(localStorageFiltro){
+    if (localStorageFiltro) {
         header.innerHTML += `
-            <div class="titulos">
-                <h1>Compras da semana</h1>
+            <img src="./assets/logo.png" alt="logo quickList">
+
+            <div class="menu">
+                <button>
+                    <a href="./index.html">Voltar</a>
+                    <i class="ph ph-arrow-left"></i>
+                </button>
                 <h2>Banco de dados: <span>${localStorageFiltro}</span></h2>
             </div>
+            <h1>Compras da semana</h1>
         `
 
         return
