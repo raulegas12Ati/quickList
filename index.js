@@ -62,5 +62,8 @@ async function filterSearch() {
         return
     }
 
-    alert(message)
+    console.log(message)
+    localStorage.setItem("filtro", JSON.stringify(filtro))
+    const localStorageFiltro = localStorage.getItem("filtro")
+    window.location.href = "./listaCompras.html"
 }
