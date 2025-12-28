@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inder&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="./main.js" defer></script>
+    <link rel="stylesheet" href="index.css">
+    <script src="./index.js" defer></script>
     <title>QuickList - Raul Egas</title>
 </head>
 
@@ -20,32 +19,16 @@
     <header>
         <img src="./assets/logo.png" alt="logo quickList">
 
-        <button>
-            <i class="ph ph-arrow-left"></i>
-            Voltar
-        </button>
-
         <h1>Compras da semana</h1>
     </header>
 
     <main>
-        <section class="add-item">
-            <input type="text" placeholder="Adicione um novo item" id="item">
-            <button onclick="addItem()">Adicionar item</button>
+        <section class="bancoDados">
+            <input type="text" placeholder="Digite o nome do banco de dados" id="filtro">
+            <button class="buscar">Buscar</button>
         </section>
 
-        <section class="list">
-        </section>
-
-        <div class="warning hide-warning">
-            <div>
-                <i class="ph ph-warning-circle ph-fill"></i>
-                <span>O item foi removido da lista</span>
-            </div>
-            <button onclick="addHideWarningClass()">
-                <i class="ph ph-x"></i>
-            </button>
-        </div>
+        <button class="criar">Criar um banco de dados</button>
     </main>
 </body>
 
