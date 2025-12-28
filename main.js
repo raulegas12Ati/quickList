@@ -1,53 +1,53 @@
 const linkAPI = "http://localhost:3333"
+//array
+let items = []
 
-const buttonBuscar = document.querySelector(".buscar")
-buttonBuscar.onclick = () => {
-    filterSearch()
-}
+async function addItem() {
+    const itemName = document.querySelector("#item").value
 
-const buttonCriar = document.querySelector(".criar")
-buttonCriar.onclick = () => {
-    createFilter()
-}
-
-async function createFilter() {
-    const filtro = document.querySelector("#filtro").value
-
-    if (!filtro) {
-        alert("Preencha o campo do banco de dados")
+    if (itemName === "") {
+        alert("Digite um item valido")
         return
     }
 
-    const response = await fetch(`${linkAPI}/criarFiltro`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ filtro })
-    }).then(response => response.json())
-
-    const { message, error } = response
-
-    if (error) {
-        alert(error)
-        return
-    }
-
-    localStorage.setItem("filtro", JSON.stringify(filtro))
     const localStorageFiltro = localStorage.getItem("filtro")
-    alert(message)
-    window.location.href = "./listaCompras.html"
-}
+    //objeto
+    const item = {
+        name: itemName,
+        checked: false,
+        filtro: localStorageFiltro
+    }
 
-async function filterSearch() {
-    const filtro = document.querySelector("#filtro").value
+    const response = await fetch(`${linkAPI}/adcionaItemNoBanco`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ item })
+    }).then(response => response.json())
 
-    if (!filtro) {
-        alert("Preencha o campo do banco de dados!")
+    const { error, message } = response
+
+    if(error){
+        alert(error)
         return
     }
 
-    const response = await fetch(`${linkAPI}/pesquisaFiltro`, {
+    console.log(message)
+
+    document.querySelector("#item").value = ""
+
+    showItemsList()
+}
+
+async function showItemsList() {
+    const localStorageFiltro = localStorage.getItem("filtro")
+    const sectionList = document.querySelector(".list")
+    const filtro = JSON.parse(localStorageFiltro)
+
+    sectionList.innerHTML = ""
+
+    const response =  await fetch(`${linkAPI}/mostrarLista`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -55,12 +55,90 @@ async function filterSearch() {
         body: JSON.stringify({ filtro })
     }).then(response => response.json())
 
-    const { message, error } = response
+    const {error, item} = response
 
-    if (error) {
-        alert(error)
-        return
+    // items.push(item)
+    console.log(items)
+
+    items.sort((itemA, itemB) => Number(itemA.checked - Number(itemB.checked)))
+
+    items.map((item, index) => {
+        sectionList.innerHTML += `
+        <div class="item">
+                <div>
+                    <input type="checkbox" name="list" id="item-${index}" ${item.checked === true ? "checked" : ""}>
+                    <div class="custom-checkbox" onclick="checkItem('${item.name}')">
+                        <img src="./assets/checked.svg" alt="checked">
+                    </div>
+                    <label for="item-${index}" onclick="checkItem('${item.name}')"('${item.name}')>${item.name}</label>
+                </div>
+                <button onclick="removeItem('${item.name}')">
+                    <img src="./assets/trash-icon.svg" alt="trash icon">
+                </button>
+            </div>
+        `
+    })
+
+    localStorage.setItem("items", JSON.stringify(items))
+}
+
+function checkItem(itemName) {
+    const item = items.find((item) => item.name === itemName)
+    item.checked = !item.checked
+    showItemsList()
+}
+
+function removeItem(itemName) {
+    const itemIndex = items.findIndex((item) => item.name === itemName)
+    const divWarning = document.querySelector(".warning")
+
+    divWarning.classList.remove("hide-warning")
+
+    setTimeout(() => {
+        divWarning.classList.add("hide-warning")
+    }, 4000)
+
+    if (itemIndex !== -1) {
+        items.splice(itemIndex, 1)
     }
 
-    alert(message)
+    showItemsList()
 }
+
+function addHideWarningClass() {
+    document.querySelector(".warning").classList.add("hide-warning")
+}
+
+function verifyLocalStorageItems() {
+    const localStorageItems = localStorage.getItem("items")
+
+    if (localStorageItems) {
+        items = JSON.parse(localStorageItems)
+        showItemsList()
+    }
+}
+
+function CriaSpan() {
+    const localStorageFiltro = JSON.parse(localStorage.getItem("filtro"))
+    const header = document.querySelector("header")
+
+    if (localStorageFiltro) {
+        header.innerHTML += `
+            <img src="./assets/logo.png" alt="logo quickList">
+
+            <div class="menu">
+                <button>
+                    <a href="./index.html">Voltar</a>
+                    <i class="ph ph-arrow-left"></i>
+                </button>
+                <h2>Banco de dados: <span>${localStorageFiltro}</span></h2>
+            </div>
+            <h1>Compras da semana</h1>
+        `
+
+        return
+    }
+}
+
+CriaSpan()
+verifyLocalStorageItems()
