@@ -18,6 +18,7 @@ async function addItem() {
         filtro: localStorageFiltro
     }
 
+    //Adiciona o item ao banco de dados
     const response = await fetch(`${linkAPI}/adcionaItemNoBanco`, {
         method: "POST",
         headers: {
@@ -42,8 +43,8 @@ async function addItem() {
 
 async function showItemsList() {
     const localStorageFiltro = localStorage.getItem("filtro")
-    const sectionList = document.querySelector(".list")
     const filtro = JSON.parse(localStorageFiltro)
+    const sectionList = document.querySelector(".list")
 
     sectionList.innerHTML = ""
 
@@ -56,9 +57,16 @@ async function showItemsList() {
     }).then(response => response.json())
 
     const {error, item} = response
+    console.log(item)
+
+    if(error){
+        alert(error)
+        return
+    }
 
     // items.push(item)
-    console.log(items)
+    items = item
+    // console.log(items)
 
     items.sort((itemA, itemB) => Number(itemA.checked - Number(itemB.checked)))
 
@@ -67,12 +75,12 @@ async function showItemsList() {
         <div class="item">
                 <div>
                     <input type="checkbox" name="list" id="item-${index}" ${item.checked === true ? "checked" : ""}>
-                    <div class="custom-checkbox" onclick="checkItem('${item.name}')">
+                    <div class="custom-checkbox" onclick="checkItem('${item.nome}')">
                         <img src="./assets/checked.svg" alt="checked">
                     </div>
-                    <label for="item-${index}" onclick="checkItem('${item.name}')"('${item.name}')>${item.name}</label>
+                    <label for="item-${index}" onclick="checkItem('${item.nome}')"('${item.nome}')>${item.nome}</label>
                 </div>
-                <button onclick="removeItem('${item.name}')">
+                <button onclick="removeItem('${item.nome}')">
                     <img src="./assets/trash-icon.svg" alt="trash icon">
                 </button>
             </div>
