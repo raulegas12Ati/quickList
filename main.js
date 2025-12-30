@@ -10,12 +10,12 @@ async function addItem() {
         return
     }
 
-    const localStorageFiltro = localStorage.getItem("filtro")
+    filtro = getValueLocalStorage()
     //objeto
     const item = {
         name: itemName,
         checked: false,
-        filtro: localStorageFiltro
+        filtro: filtro
     }
 
     //Adiciona o item ao banco de dados
@@ -29,7 +29,7 @@ async function addItem() {
 
     const { error, message } = response
 
-    if(error){
+    if (error) {
         alert(error)
         return
     }
@@ -42,13 +42,12 @@ async function addItem() {
 }
 
 async function showItemsList() {
-    const localStorageFiltro = localStorage.getItem("filtro")
-    const filtro = JSON.parse(localStorageFiltro)
+    filtro = getValueLocalStorage()
     const sectionList = document.querySelector(".list")
 
     sectionList.innerHTML = ""
 
-    const response =  await fetch(`${linkAPI}/mostrarLista`, {
+    const response = await fetch(`${linkAPI}/mostrarLista`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -56,10 +55,10 @@ async function showItemsList() {
         body: JSON.stringify({ filtro })
     }).then(response => response.json())
 
-    const {error, item} = response
+    const { error, item } = response
     console.log(item)
 
-    if(error){
+    if (error) {
         alert(error)
         return
     }
@@ -80,7 +79,7 @@ async function showItemsList() {
                     </div>
                     <label for="item-${index}" onclick="checkItem('${item.nome}')"('${item.nome}')>${item.nome}</label>
                 </div>
-                <button onclick="removeItem('${item.nome}')">
+                <button onclick="removeItem('${item.id}')">
                     <img src="./assets/trash-icon.svg" alt="trash icon">
                 </button>
             </div>
@@ -90,14 +89,53 @@ async function showItemsList() {
     localStorage.setItem("items", JSON.stringify(items))
 }
 
-function checkItem(itemName) {
-    const item = items.find((item) => item.name === itemName)
-    item.checked = !item.checked
-    showItemsList()
+async function checkItem(itemName) {
+    filtro = getValueLocalStorage()
+
+    try {
+        const response = await fetch(`${linkAPI}/mudaChecked_BD`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ filtro, itemName })
+        }).then(response => response.json())
+
+        const { error, message } = response
+
+        if (error) {
+            alert(error)
+            return
+        }
+
+        console.log(message)
+
+        // const item = items.find((item) => item.name === itemName)
+        // item.checked = !item.checked
+        showItemsList()
+    } catch (error) {
+        console.log(error)
+    }
 }
 
-function removeItem(itemName) {
-    const itemIndex = items.findIndex((item) => item.name === itemName)
+async function removeItem(idItem) {
+    const response = await fetch(`${linkAPI}/deletarItem`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({idItem})
+    }).then(response => response.json())
+
+    const {error, message} = response
+
+    if(error){
+        alert(error)
+        return
+    }
+
+    console.log(message)
+
     const divWarning = document.querySelector(".warning")
 
     divWarning.classList.remove("hide-warning")
@@ -105,10 +143,6 @@ function removeItem(itemName) {
     setTimeout(() => {
         divWarning.classList.add("hide-warning")
     }, 4000)
-
-    if (itemIndex !== -1) {
-        items.splice(itemIndex, 1)
-    }
 
     showItemsList()
 }
@@ -126,7 +160,7 @@ function verifyLocalStorageItems() {
     }
 }
 
-function CriaSpan() {
+function CreateSpan() {
     const localStorageFiltro = JSON.parse(localStorage.getItem("filtro"))
     const header = document.querySelector("header")
 
@@ -148,5 +182,11 @@ function CriaSpan() {
     }
 }
 
-CriaSpan()
+function getValueLocalStorage() {
+    const filtro = JSON.parse(localStorage.getItem("filtro"))
+
+    return filtro
+}
+
+CreateSpan()
 verifyLocalStorageItems()
