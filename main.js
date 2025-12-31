@@ -1,8 +1,24 @@
+
 const linkAPI = "http://localhost:3333"
+const inputItem = document.querySelector("#item")
+
+//Adiciona o item com o enter
+inputItem.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault()
+        addItem()
+    }
+})
 //array
 let items = []
 
+
 async function addItem() {
+    if(!isOnline()){
+        alert("Você esta offline")
+        return
+    }
+
     const itemName = document.querySelector("#item").value
 
     if (itemName === "") {
@@ -10,6 +26,7 @@ async function addItem() {
         return
     }
 
+    //Coleta o filtro do localStorage 
     filtro = getValueLocalStorage()
     //objeto
     const item = {
@@ -42,6 +59,7 @@ async function addItem() {
 }
 
 async function showItemsList() {
+    //Coleta o filtro do localStorage
     filtro = getValueLocalStorage()
     const sectionList = document.querySelector(".list")
 
@@ -63,10 +81,9 @@ async function showItemsList() {
         return
     }
 
-    // items.push(item)
     items = item
-    // console.log(items)
 
+    //Organiza os items de acorco com a coluna checked do banco de dados
     items.sort((itemA, itemB) => Number(itemA.checked - Number(itemB.checked)))
 
     items.map((item, index) => {
@@ -90,6 +107,11 @@ async function showItemsList() {
 }
 
 async function checkItem(itemName) {
+    if(!isOnline()){
+        alert("Você esta offline")
+        return
+    }
+    //Coleta o filtro do localStorage
     filtro = getValueLocalStorage()
 
     try {
@@ -110,8 +132,6 @@ async function checkItem(itemName) {
 
         console.log(message)
 
-        // const item = items.find((item) => item.name === itemName)
-        // item.checked = !item.checked
         showItemsList()
     } catch (error) {
         console.log(error)
@@ -119,17 +139,22 @@ async function checkItem(itemName) {
 }
 
 async function removeItem(idItem) {
+    if(!isOnline()){
+        alert("Você esta offline")
+        return
+    }
+    //Deleta item no banco de dados
     const response = await fetch(`${linkAPI}/deletarItem`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({idItem})
+        body: JSON.stringify({ idItem })
     }).then(response => response.json())
 
-    const {error, message} = response
+    const { error, message } = response
 
-    if(error){
+    if (error) {
         alert(error)
         return
     }
@@ -137,9 +162,10 @@ async function removeItem(idItem) {
     console.log(message)
 
     const divWarning = document.querySelector(".warning")
-
+    //Remove a class hide-warning para a mensagem de item removido aparecer
     divWarning.classList.remove("hide-warning")
 
+    //Adiciona a class hide-warning de novo
     setTimeout(() => {
         divWarning.classList.add("hide-warning")
     }, 4000)
@@ -160,7 +186,8 @@ function verifyLocalStorageItems() {
     }
 }
 
-function CreateSpan() {
+//Cria o header para adicionar qual filtro o usuário esta usando
+function CreatedHeader() {
     const localStorageFiltro = JSON.parse(localStorage.getItem("filtro"))
     const header = document.querySelector("header")
 
@@ -177,16 +204,19 @@ function CreateSpan() {
             </div>
             <h1>Compras da semana</h1>
         `
-
         return
     }
 }
 
+//Coleta o filtro do banco de dados
 function getValueLocalStorage() {
     const filtro = JSON.parse(localStorage.getItem("filtro"))
-
     return filtro
 }
 
-CreateSpan()
+function isOnline(){
+    return navigator.onLine
+}
+
+CreatedHeader()
 verifyLocalStorageItems()
