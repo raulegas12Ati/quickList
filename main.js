@@ -73,7 +73,7 @@ async function showItemsList() {
         sectionList.innerHTML += `
         <div class="item">
                 <div>
-                    <input type="checkbox" name="list" id="item-${index}" ${item.checked === true ? "checked" : ""}>
+                    <input type="checkbox" name="list" id="item-${index}" ${item.checked === 1 ? "checked" : ""}>
                     <div class="custom-checkbox" onclick="checkItem('${item.nome}')">
                         <img src="./assets/checked.svg" alt="checked">
                     </div>
