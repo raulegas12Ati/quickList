@@ -12,7 +12,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inder&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="./main.js" defer></script>
+    <script type="module">
+        import {online} from "./index.js"
+
+        if(online){
+            import("./mainOnline.js")
+            console.log("modo online")
+        } else {
+            import("./mainOfline.js")
+            console.log("modo offline")
+        }
+    </script>
     <title>QuickList - Raul Egas</title>
 </head>
 
