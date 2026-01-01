@@ -90,18 +90,27 @@ function verifyLocalStorageItems(){
 }
 
 function createHeader(){
+    const filtro = getValueLocalStorage()
     const header = document.querySelector("header")
 
-    header.innerHTML = `
-         <img src="./assets/logo.png" alt="logo quickList">
+    if (filtro) {
+        header.innerHTML += `
+            <img src="./assets/logo.png" alt="logo quickList">
 
-        <button>
-            <i class="ph ph-arrow-left"></i>
-            Voltar
-        </button>
+            <button>
+                <i class="ph ph-arrow-left"></i>
+                <a href="./index.html">Voltar</a>
+            </button>
 
-        <h1>Compras da semana</h1>
-    `
+            <h1>Compras da semana</h1>
+        `
+        return
+    }
+}
+
+function getValueLocalStorage() {
+    const filtro = JSON.parse(localStorage.getItem("filtro"))
+    return filtro
 }
 
 verifyLocalStorageItems()

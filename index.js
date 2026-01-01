@@ -86,15 +86,20 @@ function changeSiteMode() {
 
     if (modoEscolhidoPeloUsuario > 1) {
         modoEscolhidoPeloUsuario = 0
+        console.log("Chegou aqui 1")
     }
 
     if (modoEscolhidoPeloUsuario === 1) {
         isOnline = true
+        console.log("Chegou aqui 2")
     }
 
     if (modoEscolhidoPeloUsuario === 0) {
         isOnline = false
+        console.log("Chegou aqui 3")
     }
+    
+    localStorage.setItem("isOnline", JSON.stringify(isOnline))
 
     changeButton(isOnline)
 }
@@ -108,5 +113,4 @@ function changeButton(isOnline) {
         button.textContent = "Modo offline"
     }
 }
-
-export const online = isOnline
+console.log(isOnline)

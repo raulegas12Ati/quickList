@@ -13,9 +13,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inder&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script type="module">
-        import {online} from "./index.js"
+        const saveMode = localStorage.getItem("isOnline")
+        if(saveMode !== null){
+            isOnline = JSON.parse(saveMode)
+        }
+        console.log(isOnline)
 
-        if(online){
+        if(isOnline){
             import("./mainOnline.js")
             console.log("modo online")
         } else {

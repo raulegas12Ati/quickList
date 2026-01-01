@@ -188,10 +188,10 @@ function verifyLocalStorageItems() {
 
 //Cria o header para adicionar qual filtro o usuário esta usando
 function CreatedHeader() {
-    const localStorageFiltro = JSON.parse(localStorage.getItem("filtro"))
+    const filtro = getValueLocalStorage()
     const header = document.querySelector("header")
 
-    if (localStorageFiltro) {
+    if (filtro) {
         header.innerHTML += `
             <img src="./assets/logo.png" alt="logo quickList">
 
