@@ -1,4 +1,4 @@
-const linkAPI = "http://localhost:3333"
+const linkAPI = "https://quicklistbackend.onrender.com"
 let modoEscolhidoPeloUsuario = 0
 let isOnline = false
 
