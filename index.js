@@ -1,4 +1,6 @@
 const linkAPI = "http://localhost:3333"
+let modoEscolhidoPeloUsuario = 0
+let isOnline = false
 
 const buttonBuscar = document.querySelector(".buscar")
 buttonBuscar.onclick = () => {
@@ -8,6 +10,11 @@ buttonBuscar.onclick = () => {
 const buttonCriar = document.querySelector(".criar")
 buttonCriar.onclick = () => {
     createFilter()
+}
+
+const buttonOnline = document.querySelector("#online")
+buttonOnline.onclick = () => {
+    changeSiteMode()
 }
 
 async function createFilter() {
@@ -67,3 +74,33 @@ async function filterSearch() {
     const localStorageFiltro = localStorage.getItem("filtro")
     window.location.href = "./listaCompras.html"
 }
+
+function changeSiteMode() {
+    modoEscolhidoPeloUsuario = modoEscolhidoPeloUsuario + 1
+
+    if (modoEscolhidoPeloUsuario > 1) {
+        modoEscolhidoPeloUsuario = 0
+    }
+
+    if (modoEscolhidoPeloUsuario === 1) {
+        isOnline = true
+    }
+
+    if (modoEscolhidoPeloUsuario === 0) {
+        isOnline = false
+    }
+
+    changeButton(isOnline)
+}
+
+function changeButton(isOnline) {
+    const button = document.querySelector("#online")
+
+    if (isOnline) {
+        button.textContent = "Modo online"
+    } else {
+        button.textContent = "Modo offline"
+    }
+}
+
+export const online = isOnline
