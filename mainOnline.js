@@ -1,4 +1,4 @@
-
+console.log("modo online mesmo")
 const linkAPI = "http://localhost:3333"
 const inputItem = document.querySelector("#item")
 

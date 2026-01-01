@@ -1,16 +1,27 @@
 const linkAPI = "http://localhost:3333"
+let modoEscolhidoPeloUsuario = 0
+let isOnline = false
 
-const buttonBuscar = document.querySelector(".buscar")
-buttonBuscar.onclick = () => {
-    filterSearch()
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const buttonBuscar = document.querySelector(".buscar")
+    const buttonCriar = document.querySelector(".criar")
+    const buttonOnline = document.querySelector("#online")
 
-const buttonCriar = document.querySelector(".criar")
-buttonCriar.onclick = () => {
-    createFilter()
-}
+    buttonBuscar.onclick = () => {
+        filterSearch()
+    }
+    buttonCriar.onclick = () => {
+        createFilter()
+    }
+    buttonOnline.onclick = () => {
+        changeSiteMode()
+    }
+})
 
 async function createFilter() {
+    if (!isOnline) {
+        window.location.href = "./listaCompras.html"
+    }
     const filtro = document.querySelector("#filtro").value
 
     if (!filtro) {
@@ -40,6 +51,9 @@ async function createFilter() {
 }
 
 async function filterSearch() {
+    if (!isOnline) {
+        window.location.href = "./listaCompras.html"
+    }
     const filtro = document.querySelector("#filtro").value
 
     if (!filtro) {
@@ -64,6 +78,35 @@ async function filterSearch() {
 
     console.log(message)
     localStorage.setItem("filtro", JSON.stringify(filtro))
-    const localStorageFiltro = localStorage.getItem("filtro")
     window.location.href = "./listaCompras.html"
 }
+
+function changeSiteMode() {
+    modoEscolhidoPeloUsuario = modoEscolhidoPeloUsuario + 1
+
+    if (modoEscolhidoPeloUsuario > 1) {
+        modoEscolhidoPeloUsuario = 0
+    }
+
+    if (modoEscolhidoPeloUsuario === 1) {
+        isOnline = true
+    }
+
+    if (modoEscolhidoPeloUsuario === 0) {
+        isOnline = false
+    }
+
+    changeButton(isOnline)
+}
+
+function changeButton(isOnline) {
+    const button = document.querySelector("#online")
+
+    if (isOnline) {
+        button.textContent = "Modo online"
+    } else {
+        button.textContent = "Modo offline"
+    }
+}
+
+export const online = isOnline
