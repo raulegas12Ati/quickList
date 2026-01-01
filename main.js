@@ -1,5 +1,4 @@
-
-const linkAPI = "http://localhost:3333"
+const linkAPI = "https://quicklistbackend.onrender.com"
 const inputItem = document.querySelector("#item")
 
 //Adiciona o item com o enter

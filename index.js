@@ -1,4 +1,4 @@
-const linkAPI = "http://localhost:3333"
+const linkAPI = "https://quicklistbackend.onrender.com"
 
 const buttonBuscar = document.querySelector(".buscar")
 buttonBuscar.onclick = () => {
